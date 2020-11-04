@@ -1,0 +1,170 @@
+<html>
+<head>
+<title>MiniQuiz</title>
+<link rel="stylesheet" type="text/css" href="index.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>  
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body ng-app="">
+<header class="header">
+    <center>
+<form method="POST" name="strengthform" onsubmit="assign()">
+    <table id="nav-table">
+        <tr>
+        <td>
+        GroupQuiz
+        </td>
+        <td>
+        <input type="number" placeholder="Strength"  name="strengthinput" ng-model="strengthinput" required >
+        </td>
+        <td>
+            <input type="number" placeholder="Group count"  name="noofgroups" ng-model="noofgroups" required >
+            </td>
+        <td>
+        <button id="getstart" class="btn"  type="submit" ng-show="strengthform.strengthinput.$valid&&strengthform.noofgroups.$valid">&#43; NEW</button>
+        </td>
+        </tr>
+        </table>
+</form>
+</center>
+</header>
+<main id="main">
+
+</main>
+<footer style="background-color: #f3f3f3;">
+<center>
+<button id="nextqa" onclick="nextqa()">NEXT>></button>
+</center>
+</footer>
+</body>
+<script>
+var groups=[],j,k;
+var filled=[],size,remaining,randomnum;
+function assign()
+{
+    document.getElementById("getstart").style.display="none";
+    var strength = parseInt(document.forms["strengthform"]["strengthinput"].value);
+    var noofgroups = parseInt(document.forms["strengthform"]["noofgroups"].value);  
+    size = Math.floor(strength/noofgroups);
+    remaining = strength % noofgroups;
+    if(noofgroups > strength)
+    {
+        alert("No of groups count must be less than Strength");
+        return;
+    }  
+    else 
+    {
+     for (let i = 1; i<= noofgroups; i++) 
+     {
+         t=[];
+         groups.push(t);
+     }
+      for(j=1;j<=strength-remaining;j++)
+      {
+      index=Math.floor(Math.random()*noofgroups);
+      var indexe=index+1;
+      if(groups[index].length<size)
+      {
+      groups[index].push(j);
+      }
+      else
+      {
+       j--;
+      }
+     }
+     start=strength-remaining+1;
+     end=start+remaining;
+     while(start < end)
+     {
+        index=Math.floor(Math.random()*noofgroups);
+        groups[index].push(start); 
+        start++;
+     }
+     var groupdiv,unidiv,textnode,color="red",groupno;
+     for(i=0;i<groups.length;i++)
+     {
+         groupno=i+1;
+         groupdiv = document.createElement("div");
+         groups[i].forEach(element => {
+             textnode=document.createTextNode(element);
+             unidiv=document.createElement("div");
+             unidiv.appendChild(textnode);
+             unidiv.classList.add("unidiv");
+             
+         if(color=="red")
+         {
+            unidiv.style.backgroundColor="red";
+         }
+         else if(color=="blue")
+         {
+            unidiv.style.backgroundColor="blue";
+         }
+         else if(color=="green")
+         {
+            unidiv.style.backgroundColor="green";
+         }
+         else if(color=="orange")
+         {
+            unidiv.style.backgroundColor="orange";
+         }
+         else if(color=="pink")
+         {
+            unidiv.style.backgroundColor="#cc0088";
+         }
+         else
+         {
+            unidiv.style.backgroundColor="brown";
+         }
+             groupdiv.appendChild(unidiv);
+             groupdiv.classList.add("groupdiv");
+         });
+         
+         if(color=="red")
+         {
+            document.getElementById("main").innerHTML+="<div style='border-left:5px solid red;border-top:5px solid red;' class='groupdiv'>"+groupno+"<br>"+groupdiv.innerHTML+"</div>";
+             color="blue";
+         }
+         else if(color=="blue")
+         {
+            document.getElementById("main").innerHTML+="<div style='border-left:5px solid blue;border-top:5px solid blue;' class='groupdiv'>"+groupno+"<br>"+groupdiv.innerHTML+"</div>"
+             color="green";
+         }
+         else if(color=="green")
+         {
+            document.getElementById("main").innerHTML+="<div style='border-left:5px solid green;border-top:5px solid green;' class='groupdiv'>"+groupno+"<br>"+groupdiv.innerHTML+"</div>"
+             color="orange";
+         }
+         else if(color=="orange")
+         {
+            document.getElementById("main").innerHTML+="<div style='border-left:5px solid orange;border-top:5px solid orange;' class='groupdiv'>"+groupno+"<br>"+groupdiv.innerHTML+"</div>"
+             color="pink";
+         }
+         else if(color=="pink")
+         {
+            document.getElementById("main").innerHTML+="<div style='border-left:5px solid #cc0088;border-top:5px solid #cc0088;' class='groupdiv'>"+groupno+"<br>"+groupdiv.innerHTML+"</div>"
+             color="brown";
+         }
+         else
+         {
+            document.getElementById("main").innerHTML+="<div style='border-left:5px solid brown;border-top:5px solid brown;' class='groupdiv'>"+groupno+"<br>"+groupdiv.innerHTML+"</div>"
+             color="red";
+         }
+     }
+     document.getElementById("nextqa").style.display='block';
+if (typeof(Storage) !== "undefined") 
+{
+  sessionStorage.setItem("groupquizgroups", JSON.stringify(groups));
+} 
+else 
+{
+  document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+}
+}
+} 
+function nextqa()
+{
+    window.location.replace("qa.html");
+}
+
+</script>
+</html>

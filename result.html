@@ -1,0 +1,45 @@
+<html>
+<head>
+</head>
+<style>
+#result {
+    vertical-align: middle;
+    font-size: 30px;
+    border-left:5px solid brown;
+    background-color: gold;
+    padding: 20px;
+}
+</style>
+<body>
+    <br><br><br><br>
+    <center>
+<div id="result">
+
+</div>
+</center>
+<script>
+var result=JSON.parse(sessionStorage.getItem("groupscores"));
+//alert(result);
+var winners=[],i;
+var largest= 0;
+for (i=0; i<=largest;i++){
+    if (result[i]>largest) {
+         largest=result[i];
+    }
+}
+//alert(largest);
+for(i=0;i<result.length;i++)
+{
+        if(result[i] >= largest)
+        {
+            winners.push(i);
+        }
+}
+winners.forEach(element => {
+    ele=element+1;
+    document.getElementById("result").innerHTML+="Group "+ele;
+});
+document.getElementById("result").innerHTML+=" are Winners";
+</script>
+</body>
+</html>

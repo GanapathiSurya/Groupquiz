@@ -1,0 +1,185 @@
+<html>
+<head></head>
+<link rel="stylesheet" type="text/css" href="main.css">
+<body>
+    <center>
+        <header class="header">
+            <center>
+                <table id="nav-table">
+                    <tr>
+                    <td>
+                    GroupQuiz
+                    </td>
+                    </tr>
+                </table>
+            </center>
+            
+        </header>
+        <br><br>
+            <footer class="footer">
+                <div id="leftdiv" style="background-color:#40bf40;padding: 20px;margin-right:10px;border-radius:5px;">
+                  <div id="whoseturn">
+                      <div style="font-size:30px;margin-bottom: 10px;">
+                          Turn
+                      </div>
+                     <select id="groupselectturn" onchange="presentturn()">
+
+                     </select>
+                  </div>
+                  <div id="characterdiplay">
+                    <br>  
+                    Display
+                    <br>
+                      <br>
+                      
+                    <input type="text" id="chardisplay" size="2" placeholder="char" required><br><br>
+                    <button style="padding:10px;cursor:pointer" onclick="chardisplay()">GO</button>
+                      
+                  </div>
+                  <div>
+                      <br><br>
+                      Give Marks<br><br>
+                     <button onclick="allot()" class="nextfinish">GIVE</button>
+                     <br><br>
+                      Cut Marks<br><br>
+                    <button onclick="deallot()" class="nextfinish">CUT</button>
+                  </div>
+                </div>
+                <div id="questionandanswer" style="width:60%;background-color: blue;margin-right:10px;border-radius:3px;">
+                    <div id="questionandanswerdiv">
+                        
+                    </div>
+                   <table id="tableanswer">
+                       <tr>
+
+                       </tr>
+                   </table>
+                   <br><br>
+                   <button type="button" class="nextfinish" onclick="alldisplay()">DISPLAY ANSWER</button>
+                   <button type="button" id="btngodisplay" class="nextfinish" onclick="godisplay()">NEXT</button><br><br>
+                   <button type="button" id="btnfinishdisplay" class="nextfinish" onclick="finishdisplay()">FINISH</button>
+                </div>
+            <div id="groupscores" style="background-color:indianred;border-radius:5px;">
+                 <table id="groupscorestable" style="width:30%;">
+                     <tr>
+                         <th>GROUP</th><th>SCORE</th>
+                     </tr>
+                 </table>
+            </div>
+            </footer>
+</center>
+<script type="text/javascript">
+var prequestion,preanswer,i=1,q;
+var questions=JSON.parse(sessionStorage.getItem("groupquizquestions"));
+var answers=JSON.parse(sessionStorage.getItem("groupquizanswers"));
+var groups= JSON.parse(sessionStorage.getItem("groupquizgroups"));
+var gno,groupturnoption,groupnamenode,groupscores=[],row,qe,tdnode,tdsnode,groupname,group,initialscore;
+for(q=0;q<groups.length;q++)
+{
+    groupscores[q]=0;
+    groupturnoption=document.createElement("option");
+    gno=q+1;
+    groupname="Group"+gno;
+    groupnamenode=document.createTextNode(groupname);
+    groupturnoption.appendChild(groupnamenode);
+    document.getElementById("groupselectturn").appendChild(groupturnoption);
+}
+score(groupscores);
+function score(groupscores)
+{
+    //alert("score");
+    document.getElementById("groupscorestable").innerHTML=document.getElementById("groupscorestable").childNodes[0];
+    document.getElementById("groupscorestable").innerHTML="<tr><td>GROUP</td><td>SCORE</td></tr>";
+    for(q=0;q<groups.length;q++)
+{    
+    qe=q+1;
+    row=document.createElement("tr");
+    tdnode=document.createElement("td");
+    group=qe.toString();
+    groupname=document.createTextNode(group);
+    tdnode.appendChild(groupname);
+    row.appendChild(tdnode);
+    tdsnode=document.createElement("td");
+    initialscore=document.createTextNode(groupscores[q]);
+    tdsnode.appendChild(initialscore);
+    row.appendChild(tdsnode);
+    document.getElementById("groupscorestable").appendChild(row);
+}
+}
+var questiondiv,answerdiv,questionandanswer,questionnode,splitanswer,tableanswer,transwer,tdanswer,node,qno=0,pq;
+sessionStorage.setItem("qno",qno);
+function godisplay()
+{
+pq=parseInt(sessionStorage.getItem("qno"))+1;
+sessionStorage.setItem("qno",pq);
+//alert("Type"+typeof(pq));
+displayquestion(pq);
+}
+displayquestion(qno);
+function displayquestion(a){
+    prequestion = questions[a];
+    preanswer = answers[a];
+    document.getElementById("questionandanswerdiv").innerHTML=a+1+". "+prequestion;
+    splitanswer=preanswer.split("");
+    tableanswer=document.getElementById('tableanswer');
+    transwer=tableanswer.getElementsByTagName("tr")[0];
+    transwer.innerHTML="";
+    splitanswer.forEach(element => {
+        if(element!=" ")
+        {
+      transwer.innerHTML+="<td>"+element+"</td>";
+        }
+    });  
+    if(a==questions.length-1)
+    {
+        document.getElementById("btngodisplay").style.display="none";
+        document.getElementById("btnfinishdisplay").style.display="block";
+    }
+}
+var charno,indexcharno,groupid;
+function chardisplay()
+{
+    charno=document.getElementById("chardisplay").value;
+    tableanswer=document.getElementById('tableanswer');
+    transwer=tableanswer.getElementsByTagName("tr")[0];
+    indexcharno=charno-1;
+    transwer.childNodes[indexcharno].style.color="white";
+    groupid=parseInt(document.getElementById("groupselectturn").value[5]);
+    groupscores[groupid-1]-=5;
+    //alert("score"+groupscores[groupid-1]);
+    score(groupscores);
+}
+function allot()
+{
+    groupid=parseInt(document.getElementById("groupselectturn").value[5]);
+    groupscores[groupid-1]+=25;
+    score(groupscores); 
+}
+function deallot()
+{
+    groupid=parseInt(document.getElementById("groupselectturn").value[5]);
+    groupscores[groupid-1]-=10;
+    score(groupscores); 
+}
+var fulltableanswer,fulltranswer;
+function alldisplay()
+{
+    //alert("hello");
+    fulltableanswer=document.getElementById('tableanswer');
+    fulltranswer=fulltableanswer.getElementsByTagName("tr")[0];
+    fulltdanswer=fulltranswer.getElementsByTagName("td");
+    fulltdlength=fulltdanswer.length;
+    for(n=0;n<fulltdlength;n++)
+    {
+     fulltdanswer[n].style.color="white";
+    }
+}
+function finishdisplay()
+{
+    //alert(groupscores);
+    sessionStorage.setItem("groupscores",JSON.stringify(groupscores));
+    window.location.replace("result.html");
+}
+</script>
+</body>
+</html>

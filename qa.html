@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Questions</title>
+<link rel="stylesheet" type="text/css" href="qa.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>  
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body onload="checkFileAPI();">
+<center>
+<header class="header">
+    <table id="nav-table">
+        <tr>
+        <td>
+        GroupQuiz
+        </td>
+        </tr>
+        </table>
+</header>
+<br><br>
+    <main id="qa">    
+        <table>
+            <tr>
+                <th>Questions</th>
+                    <td><label class="custom-file-upload">
+                        <input type="file" accept=".txt" onchange='readQuestions(this)' />
+                    </label></td>
+            </tr>
+            <tr>
+                <th>Answers</th><td><label class="custom-file-upload">
+                    <input type="file" accept=".txt" onchange='readAnswers(this)'/>
+                </label></td>
+            </tr>
+        </table>
+    </main>
+    <footer>
+        <button id="confirmqa" onclick="main()">Confirm</button>
+    </footer>
+    </center>
+    <script type="text/javascript">
+    var questions=[],answers=[];
+        function checkFileAPI() {
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                reader = new FileReader();
+                return true; 
+            } else {
+                alert('The File APIs are not fully supported by your browser. Fallback required.');
+                return false;
+            }
+        }
+    
+        function readQuestions(filePath) {
+            var output = ""; 
+            if(filePath.files && filePath.files[0]) {           
+                reader.onload = function (e) {
+                    output = e.target.result;
+                    displayQuestions(output);
+                };
+                reader.readAsText(filePath.files[0]);
+            }
+            else if(ActiveXObject && filePath) {
+                try {
+                    reader = new ActiveXObject("Scripting.FileSystemObject");
+                    var file = reader.OpenTextFile(filePath, 1); 
+                    output = file.ReadAll(); 
+                    file.Close(); 
+                    displayQuestions(output);
+                } catch (e) {
+                    if (e.number == -2146827859) {
+                        alert('Unable to access local files due to browser security settings. ' + 
+                         'To overcome this, go to Tools->Internet Options->Security->Custom Level. ' + 
+                         'Find the setting for "Initialize and script ActiveX controls not marked as safe" and change it to "Enable" or "Prompt"'); 
+                    }
+                }       
+            }
+            else { 
+                return false;
+            }       
+            return true;
+        }   
+        function displayQuestions(txt) {
+            var questions = txt.split(",");
+            sessionStorage.setItem("groupquizquestions",JSON.stringify(questions));
+        }   
+        function readAnswers(filePath) {
+            var output = ""; 
+            if(filePath.files && filePath.files[0]) {           
+                reader.onload = function (e) {
+                    output = e.target.result;
+                    displayAnswers(output);
+                };
+                reader.readAsText(filePath.files[0]);
+            }
+            else if(ActiveXObject && filePath) {
+                try {
+                    reader = new ActiveXObject("Scripting.FileSystemObject");
+                    var file = reader.OpenTextFile(filePath, 1); 
+                    output = file.ReadAll(); 
+                    file.Close(); 
+                    displayAnswers(output);
+                } catch (e) {
+                    if (e.number == -2146827859) {
+                        alert('Unable to access local files due to browser security settings. ' + 
+                         'To overcome this, go to Tools->Internet Options->Security->Custom Level. ' + 
+                         'Find the setting for "Initialize and script ActiveX controls not marked as safe" and change it to "Enable" or "Prompt"'); 
+                    }
+                }       
+            }
+            else { 
+                return false;
+            }       
+            return true;
+        } 
+        function displayAnswers(txt) {
+            var answers = txt.split(",");
+            sessionStorage.setItem("groupquizanswers",JSON.stringify(answers));
+        }   
+        function main(){
+            window.location.replace("main.html");
+        }
+    </script>
+</body>
+</html>

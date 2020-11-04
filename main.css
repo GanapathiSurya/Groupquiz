@@ -1,0 +1,70 @@
+body{
+    margin: 0;
+}
+.header{
+    background-color:white;
+    align-items: center;
+    width: 99%;
+    height: 25px;
+    padding: 20px;
+    text-align: center;
+    display: grid;
+    border-bottom: 3px solid black;
+}
+#nav-table{
+justify-content: space-between;
+}
+#nav-table td{
+   
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+align-items: center;
+    font-size: 30px;
+    
+}
+#groupscorestable {
+    border-spacing: 10px;
+    
+}
+#groupscorestable td,#groupscorestable th {
+    border:2px solid white;
+    padding:20px;
+    color:white;
+}
+.footer {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    color: white;
+}
+#questionandanswer div
+{
+    font-size: 50px;
+    margin:20px;
+    justify-content: left;
+}
+#tableanswer
+{
+    border-spacing: 10px;
+}
+#tableanswer td {
+    border-bottom: 2px solid white;
+    font-size: 40px;
+    color:blue;
+}
+#groupselectturn
+{
+    font-size:20px;
+}
+#btnfinishdisplay
+{
+    display: none;
+}
+.nextfinish
+{
+    font-size: 25px;
+    padding:5px;
+    border-radius: 5px;
+    outline: none;
+    border:none;
+    cursor: pointer;
+}
