@@ -70,9 +70,9 @@
 </center>
 <script type="text/javascript">
 var prequestion,preanswer,i=1,q;
-var questions=JSON.parse(sessionStorage.getItem("groupquizquestions"));
-var answers=JSON.parse(sessionStorage.getItem("groupquizanswers"));
-var groups= JSON.parse(sessionStorage.getItem("groupquizgroups"));
+var questions=JSON.parse(localStorage.getItem("groupquizquestions"));
+var answers=JSON.parse(localStorage.getItem("groupquizanswers"));
+var groups= JSON.parse(localStorage.getItem("groupquizgroups"));
 var gno,groupturnoption,groupnamenode,groupscores=[],row,qe,tdnode,tdsnode,groupname,group,initialscore;
 for(q=0;q<groups.length;q++)
 {
@@ -107,11 +107,11 @@ function score(groupscores)
 }
 }
 var questiondiv,answerdiv,questionandanswer,questionnode,splitanswer,tableanswer,transwer,tdanswer,node,qno=0,pq;
-sessionStorage.setItem("qno",qno);
+localStorage.setItem("qno",qno);
 function godisplay()
 {
-pq=parseInt(sessionStorage.getItem("qno"))+1;
-sessionStorage.setItem("qno",pq);
+pq=parseInt(localStorage.getItem("qno"))+1;
+localStorage.setItem("qno",pq);
 //alert("Type"+typeof(pq));
 displayquestion(pq);
 }
@@ -177,7 +177,7 @@ function alldisplay()
 function finishdisplay()
 {
     //alert(groupscores);
-    sessionStorage.setItem("groupscores",JSON.stringify(groupscores));
+    localStorage.setItem("groupscores",JSON.stringify(groupscores));
     window.location.replace("result.html");
 }
 </script>

@@ -80,7 +80,7 @@
         }   
         function displayQuestions(txt) {
             var questions = txt.split(",");
-            sessionStorage.setItem("groupquizquestions",JSON.stringify(questions));
+            localStorage.setItem("groupquizquestions",JSON.stringify(questions));
         }   
         function readAnswers(filePath) {
             var output = ""; 
@@ -113,7 +113,7 @@
         } 
         function displayAnswers(txt) {
             var answers = txt.split(",");
-            sessionStorage.setItem("groupquizanswers",JSON.stringify(answers));
+            localStorage.setItem("groupquizanswers",JSON.stringify(answers));
         }   
         function main(){
             window.location.replace("main.html");
